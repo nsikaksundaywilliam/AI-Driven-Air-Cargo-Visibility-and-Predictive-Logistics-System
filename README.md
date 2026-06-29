@@ -112,3 +112,7 @@ The platform enables aviation logistics organizations to:
 AI Automation Engineer
 
 Capstone Project — 10Alytics Business Hack-AI-Thon 2026
+
+## Demo Video Link
+https://youtu.be/8skY4EwXRdI?si=Xw8-6TOjLsk-TYpk
+
