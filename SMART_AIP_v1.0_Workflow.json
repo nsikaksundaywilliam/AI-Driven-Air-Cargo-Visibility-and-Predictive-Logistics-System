@@ -1,0 +1,1015 @@
+{
+  "name": "AVIATION & LOG_CARGO TRACKING SYSTM WORKFLOW_2026 May Cohort Capstone Project/NSIKAK SUNDAY WILLIAM",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cargo-delay-alert",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -6608,
+        416
+      ],
+      "id": "c9c8f406-1eb3-44d5-a9ed-41b8059b0985",
+      "name": "Webhook",
+      "webhookId": "52fdcc99-9c6b-48e9-a59a-e394da7e4447"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -5232,
+        640
+      ],
+      "id": "0846a5b5-7594-46fd-a071-a940d1becc10",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bWap4qy2CIredqY5",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"delay_risk_level\": {\n      \"type\": \"string\"\n    },\n    \"recommended_action\": {\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\n    \"delay_risk_level\",\n    \"recommended_action\"\n  ]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -5104,
+        640
+      ],
+      "id": "d8b7fd39-561b-4b53-9fb6-8c52c9457d95",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8e0a7ec5-2749-4f27-9a93-07625e55910c",
+              "name": "cargo_id",
+              "value": "=CG001",
+              "type": "string"
+            },
+            {
+              "id": "c344a8ef-f9a5-4c17-9fbb-a17a41474aad",
+              "name": "awb_number",
+              "value": "=AWB123456",
+              "type": "string"
+            },
+            {
+              "id": "c3eb6881-c9ab-47bc-a74c-11a1f46b839b",
+              "name": "origin_airport",
+              "value": "=LOS",
+              "type": "string"
+            },
+            {
+              "id": "0eb6299f-3f22-41fe-9e00-05dcc03474c8",
+              "name": "destination_airport",
+              "value": "=ABV",
+              "type": "string"
+            },
+            {
+              "id": "e77ca8b5-c457-42e0-aa8e-f3414c776ca9",
+              "name": "current_location",
+              "value": "Murtala Muhammed International Airport Cargo Terminal, Lagos",
+              "type": "string"
+            },
+            {
+              "id": "a8c83cb2-d302-40d1-ae7d-86d4fac94205",
+              "name": "cargo_status",
+              "value": "In Transit",
+              "type": "string"
+            },
+            {
+              "id": "f89aa964-e302-4b72-a15b-16ca137f0404",
+              "name": "event_timestamp",
+              "value": "2026-06-25T10:15:00Z",
+              "type": "string"
+            },
+            {
+              "id": "08e376ba-ba7d-4fce-b44c-16e080910d93",
+              "name": "delay_hours",
+              "value": "=2",
+              "type": "string"
+            },
+            {
+              "id": "f72e1aca-f87b-4e8b-a0f8-cc87aa36b2aa",
+              "name": "weather_condition",
+              "value": "Thunderstorm",
+              "type": "string"
+            },
+            {
+              "id": "98f98adf-c1c3-4c10-85a5-e8ff489b326a",
+              "name": "route_status",
+              "value": "congested",
+              "type": "string"
+            },
+            {
+              "id": "f2d560ef-9107-4e5e-9650-de5049b237a7",
+              "name": "shipper_name",
+              "value": "ABC Pharma Ltd",
+              "type": "string"
+            },
+            {
+              "id": "20163a39-af86-4b81-a9ab-ea49f8a69599",
+              "name": "flight_number",
+              "value": "P4-7123",
+              "type": "string"
+            },
+            {
+              "id": "5dd1a8cd-0bf3-4685-8048-ca045bd43d68",
+              "name": "consignee_name",
+              "value": "XYZ Medical Stores",
+              "type": "string"
+            },
+            {
+              "id": "5f207c87-86c9-4253-80e8-fd7c05706d7f",
+              "name": "cargo_type",
+              "value": "Pharmaceuticals",
+              "type": "string"
+            },
+            {
+              "id": "ef140d61-b767-4bef-8de5-ac57bd211f3e",
+              "name": "priority_level",
+              "value": "High",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -6368,
+        416
+      ],
+      "id": "6796e1cd-4204-40c0-97d9-03eae92942c1",
+      "name": "Prepare Cargo Input"
+    },
+    {
+      "parameters": {
+        "jsCode": "const mock = {\n  cargo_id: \"CG001\",\n  awb_number: \"AWB123456\",\n  origin_airport: \"LOS\",\n  destination_airport: \"ABV\",\n  current_location: \"Murtala Muhammed International Airport Cargo Terminal, Lagos\",\n  cargo_status: \"In Transit\",\n  event_timestamp: \"2026-06-25T10:15:00Z\",\n  weather_condition: \"Thunderstorm\",\n  route_status: \"Congested\",\n  delay_hours: 2,\n  shipper_name: \"ABC Pharma Ltd\",\n  flight_number: \"P4-7123\",\n  consignee_name: \"XYZ Medical Stores\",\n  cargo_type: \"Pharmaceuticals\",\n  priority_level: \"High\"\n};\n\nfunction normalizeStatus(status) {\n  const s = (status || \"\").toString().trim().toLowerCase();\n\n  if ([\"booked\", \"booking confirmed\"].includes(s)) return \"Booked\";\n  if ([\"received\", \"received at terminal\", \"cargo received\"].includes(s)) return \"Received at Cargo Terminal\";\n  if ([\"processing\", \"under processing\"].includes(s)) return \"Under Processing\";\n  if ([\"loaded\", \"loaded on flight\"].includes(s)) return \"Loaded on Flight\";\n  if ([\"in transit\", \"transit\"].includes(s)) return \"In Transit\";\n  if ([\"arrived\", \"arrived at destination\"].includes(s)) return \"Arrived at Destination\";\n  if ([\"customs\", \"under customs clearance\", \"customs clearance\"].includes(s)) return \"Under Customs Clearance\";\n  if ([\"ready for pickup\", \"pickup\"].includes(s)) return \"Ready for Pickup\";\n  if ([\"delivered\", \"released\"].includes(s)) return \"Delivered\";\n  if ([\"delayed\", \"exception\"].includes(s)) return \"Delayed / Exception\";\n\n  return \"Under Processing\";\n}\n\nfunction deriveShipmentStage(status) {\n  switch (status) {\n    case \"Booked\":\n      return \"Pre-Shipment\";\n    case \"Received at Cargo Terminal\":\n    case \"Under Processing\":\n      return \"Origin Terminal Handling\";\n    case \"Loaded on Flight\":\n    case \"In Transit\":\n      return \"Air Transit\";\n    case \"Arrived at Destination\":\n      return \"Destination Arrival\";\n    case \"Under Customs Clearance\":\n      return \"Customs Clearance\";\n    case \"Ready for Pickup\":\n      return \"Last-Mile Release\";\n    case \"Delivered\":\n      return \"Completed\";\n    case \"Delayed / Exception\":\n      return \"Exception Management\";\n    default:\n      return \"Origin Terminal Handling\";\n  }\n}\n\nconst cargoStatus = normalizeStatus(mock.cargo_status);\nconst normalized = {\n  cargo_id: mock.cargo_id,\n  awb_number: mock.awb_number,\n  origin_airport: mock.origin_airport,\n  destination_airport: mock.destination_airport,\n  current_location: mock.current_location,\n  cargo_status: cargoStatus,\n  event_timestamp: mock.event_timestamp,\n  flight_number: mock.flight_number,\n  shipper_name: mock.shipper_name,\n  consignee_name: mock.consignee_name,\n  cargo_type: mock.cargo_type,\n  priority_level: mock.priority_level,\n  weather_condition: mock.weather_condition,\n  route_status: mock.route_status,\n  delay_hours: Number(mock.delay_hours),\n  shipment_stage: deriveShipmentStage(cargoStatus),\n  risk_inputs: {\n    weather_condition: mock.weather_condition,\n    route_status: mock.route_status,\n    delay_hours: Number(mock.delay_hours),\n    priority_level: mock.priority_level,\n    cargo_type: mock.cargo_type\n  }\n};\n\nreturn [{ json: normalized }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -6144,
+        416
+      ],
+      "id": "3bab1a07-7fb2-4dc0-a362-2c3516f706e0",
+      "name": "Normalize Cargo Data"
+    },
+    {
+      "parameters": {
+        "from": "+14155238886",
+        "to": "+2348075145306",
+        "toWhatsapp": true,
+        "message": "=🚨 URGENT CARGO DELAY ALERT\n\nCargo ID: {{$json.cargo_id}}\n\nAWB: {{$json.awb_number}}\n\nRoute: {{$json.origin_airport}} → {{$json.destination_airport}}\n\nStatus: {{$json.cargo_status}}\n\nCurrent Location:\n{{$json.current_location}}\n\nDelay:\n{{$json.delay_hours}} hrs\n\nWeather:\n{{$json.weather_condition}}\n\nRisk Level:\n{{$json.delay_risk}}\n\nRecommended Action:\n{{$json.recommended_action}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        -4448,
+        -176
+      ],
+      "id": "af23011c-a669-4959-a923-f57fad3fb94d",
+      "name": "Send High-Risk WhatsApp Alert",
+      "credentials": {
+        "twilioApi": {
+          "id": "43GDPGqV5PmUrtf5",
+          "name": "Twilio account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "williamzamng@yahoo.com",
+        "subject": "=URGENT: Cargo Delay Alert - {{ $json.cargo_id }}",
+        "message": "=<p>Dear Operations Team,</p>  <p><strong>URGENT:</strong> A high-risk cargo delay has been detected and requires immediate attention.</p>  <p> <strong>Cargo ID:</strong> {{ $json.cargo_id }}<br> <strong>AWB Number:</strong> {{ $json.awb_number }}<br> <strong>Origin:</strong> {{ $json.origin_airport }}<br> <strong>Destination:</strong> {{ $json.destination_airport }}<br> <strong>Current Location:</strong> {{ $json.current_location }}<br> <strong>Current Status:</strong> {{ $json.cargo_status }}<br> <strong>Shipment Stage:</strong> {{ $json.shipment_stage }}<br> <strong>Weather Condition:</strong> {{ $json.weather_condition }}<br> <strong>Route Status:</strong> {{ $json.route_status }}<br> <strong>Delay Hours:</strong> {{ $json.delay_hours }}<br> <strong>Risk Level:</strong> {{ $json.delay_risk }}<br> <strong>Recommended Action:</strong> {{ $json.recommended_action }} </p>  <p>Please escalate immediately, notify relevant stakeholders, and begin contingency action.</p>  <p>Regards,<br>10Alytics Cargo Monitoring System</p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -4448,
+        16
+      ],
+      "id": "b8b781bb-c83b-4c26-a248-7346df1e0ed5",
+      "name": "Send High-Risk Email Alert",
+      "webhookId": "c4cbeb75-0dc6-4bea-b34d-e53cc47e3391",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "88ORfvKqg6DVcF15",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "cargo_tracking",
+          "mode": "list",
+          "cachedResultName": "cargo_tracking"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "delay_hours": "={{$json.delay_hours}}",
+            "cargo_id": "={{$json.cargo_id}}",
+            "awb_number": "={{$json.awb_number}}",
+            "destination": "={{$json.destination_airport}}",
+            "origin": "={{$json.origin_airport}}",
+            "cargo_status": "={{$json.cargo_status}}",
+            "weather_condition": "={{$json.weather_condition}}",
+            "route_status": "= {{$json.route_status}}",
+            "delay_risk_level": "={{$json.delay_risk}}",
+            "recommended_action": "={{$json.recommended_action}}",
+            "updated_at": "={{ $now.toSQL() }}"
+          },
+          "matchingColumns": [
+            "cargo_id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "cargo_id",
+              "displayName": "cargo_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "awb_number",
+              "displayName": "awb_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "origin",
+              "displayName": "origin",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "destination",
+              "displayName": "destination",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cargo_status",
+              "displayName": "cargo_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "delay_hours",
+              "displayName": "delay_hours",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "weather_condition",
+              "displayName": "weather_condition",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "route_status",
+              "displayName": "route_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "delay_risk_level",
+              "displayName": "delay_risk_level",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "recommended_action",
+              "displayName": "recommended_action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "updated_at",
+              "displayName": "updated_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -4448,
+        208
+      ],
+      "id": "93274c8f-cab2-403f-b9ec-fe1082c106d2",
+      "name": "Update High-Risk Record",
+      "credentials": {
+        "postgres": {
+          "id": "NqiOhqMavHcWUUX0",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "williamzamng@yahoo.com",
+        "subject": "=MEDIUM ALERT: Cargo Delay Notice - {{ $json.cargo_id }}",
+        "message": "=<p>Dear Operations Team,</p>\n\n<p>A medium-risk cargo delay has been identified.</p>\n\n<p>\n<strong>Cargo ID:</strong> {{ $json.cargo_id }}<br>\n<strong>AWB Number:</strong> {{ $json.awb_number }}<br>\n<strong>Origin:</strong> {{ $json.origin_airport }}<br>\n<strong>Destination:</strong> {{ $json.destination_airport }}<br>\n<strong>Current Location:</strong> {{ $json.current_location }}<br>\n<strong>Current Status:</strong> {{ $json.cargo_status }}<br>\n<strong>Weather Condition:</strong> {{ $json.weather_condition }}<br>\n<strong>Route Status:</strong> {{ $json.route_status }}<br>\n<strong>Delay Hours:</strong> {{ $json.delay_hours }}<br>\n<strong>Risk Level:</strong> {{ $json.delay_risk }}<br>\n<strong>Recommended Action:</strong> {{ $json.recommended_action }}\n</p>\n\n<p>Please monitor this shipment closely and take any necessary action.</p>\n\n<p>Regards,<br>10Alytics Cargo Monitoring System</p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -4448,
+        400
+      ],
+      "id": "d7c1c7e6-ef72-4e28-88ab-6c8ccca669e1",
+      "name": "Send Medium-Risk Email Alert",
+      "webhookId": "ae2dbe33-d557-4971-aae3-64de1959c9e6",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "88ORfvKqg6DVcF15",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE shipments\nSET\n  weather_condition = '{{ $json.weather_condition }}',\n  route_status = '{{ $json.route_status }}',\n  delay_hours = {{ $json.delay_hours }},\n  last_event_timestamp = '{{ $json.event_timestamp }}',\n  updated_at = NOW()\nWHERE awb_number = '{{ $json.awb_number }}'\nRETURNING *;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -4448,
+        592
+      ],
+      "id": "632fac19-8a9d-4f90-8ecc-50dce951cd42",
+      "name": "Update Medium-Risk Record",
+      "credentials": {
+        "postgres": {
+          "id": "NqiOhqMavHcWUUX0",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE shipments\nSET\n  weather_condition = '{{ $json.weather_condition }}',\n  route_status = '{{ $json.route_status }}',\n  delay_hours = {{ $json.delay_hours }},\n  last_event_timestamp = '{{ $json.event_timestamp }}',\n  updated_at = NOW()\nWHERE awb_number = '{{ $json.awb_number }}'\nRETURNING *;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -4448,
+        784
+      ],
+      "id": "0e057788-b49b-43ef-be61-a76e3c41f321",
+      "name": "Update Low-Risk Record",
+      "credentials": {
+        "postgres": {
+          "id": "NqiOhqMavHcWUUX0",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO shipments (\n    cargo_id,\n    awb_number,\n    origin_airport,\n    destination_airport,\n    current_location,\n    current_status,\n    shipment_stage,\n    flight_number,\n    shipper_name,\n    consignee_name,\n    cargo_type,\n    priority_level,\n    weather_condition,\n    route_status,\n    delay_hours,\n    last_event_timestamp,\n    updated_at\n)\nVALUES (\n    '{{ $json.cargo_id }}',\n    '{{ $json.awb_number }}',\n    '{{ $json.origin_airport }}',\n    '{{ $json.destination_airport }}',\n    '{{ $json.current_location }}',\n    '{{ $json.cargo_status }}',\n    '{{ $json.shipment_stage }}',\n    '{{ $json.flight_number }}',\n    '{{ $json.shipper_name }}',\n    '{{ $json.consignee_name }}',\n    '{{ $json.cargo_type }}',\n    '{{ $json.priority_level }}',\n    '{{ $json.weather_condition }}',\n    '{{ $json.route_status }}',\n    {{ $json.delay_hours }},\n    '{{ $json.event_timestamp }}',\n    CURRENT_TIMESTAMP\n)\nON CONFLICT (awb_number)\nDO UPDATE SET\n    cargo_id = EXCLUDED.cargo_id,\n    origin_airport = EXCLUDED.origin_airport,\n    destination_airport = EXCLUDED.destination_airport,\n    current_location = EXCLUDED.current_location,\n    current_status = EXCLUDED.current_status,\n    shipment_stage = EXCLUDED.shipment_stage,\n    flight_number = EXCLUDED.flight_number,\n    shipper_name = EXCLUDED.shipper_name,\n    consignee_name = EXCLUDED.consignee_name,\n    cargo_type = EXCLUDED.cargo_type,\n    priority_level = EXCLUDED.priority_level,\n    weather_condition = EXCLUDED.weather_condition,\n    route_status = EXCLUDED.route_status,\n    delay_hours = EXCLUDED.delay_hours,\n    last_event_timestamp = EXCLUDED.last_event_timestamp,\n    updated_at = CURRENT_TIMESTAMP\nRETURNING *;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -5920,
+        416
+      ],
+      "id": "233ab727-1aa5-4129-ba05-460795d0ad9c",
+      "name": "Upsert Shipment Record",
+      "credentials": {
+        "postgres": {
+          "id": "NqiOhqMavHcWUUX0",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tracking_events",
+          "mode": "list",
+          "cachedResultName": "tracking_events"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "delay_hours": "={{$json.delay_hours}}",
+            "cargo_id": "={{$json.cargo_id}}",
+            "awb_number": "={{$json.awb_number}}",
+            "event_type": "={{$json.delay_risk + \" Risk Assessment\"}}",
+            "cargo_status": "={{$json.cargo_status}}",
+            "shipment_stage": "={{$json.shipment_stage}}",
+            "current_location": "={{$json.current_location}}",
+            "weather_condition": "={{$json.weather_condition}}",
+            "route_status": "={{$json.route_status}}",
+            "source_node": "\"Compute Delay Risk Score\" ",
+            "created_at": "={{$now}}",
+            "event_timestamp": "={{$json.event_timestamp}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "event_id",
+              "displayName": "event_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "cargo_id",
+              "displayName": "cargo_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "awb_number",
+              "displayName": "awb_number",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "event_timestamp",
+              "displayName": "event_timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "event_type",
+              "displayName": "event_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "cargo_status",
+              "displayName": "cargo_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "shipment_stage",
+              "displayName": "shipment_stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "current_location",
+              "displayName": "current_location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "weather_condition",
+              "displayName": "weather_condition",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "route_status",
+              "displayName": "route_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "delay_hours",
+              "displayName": "delay_hours",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "source_node",
+              "displayName": "source_node",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -4704,
+        608
+      ],
+      "id": "4302e71c-70ea-4029-9741-03e7b876a3fa",
+      "name": "Insert Tracking Event1",
+      "credentials": {
+        "postgres": {
+          "id": "NqiOhqMavHcWUUX0",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.open-meteo.com/v1/forecast",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "latitude",
+              "value": "9.0065"
+            },
+            {
+              "name": "longitude",
+              "value": "7.2632"
+            },
+            {
+              "name": "current",
+              "value": "temperature_2m,precipitation,rain,showers,wind_speed_10m,visibility,cloud_cover"
+            },
+            {
+              "name": "timezone",
+              "value": "auto"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -5696,
+        416
+      ],
+      "id": "4457d9fe-f047-4204-8b37-0363e37ba8e2",
+      "name": "Retrieve Weather Intelligence"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get shipment data from the previous node\nconst shipment = $('Upsert Shipment Record').first().json;\n\n// Get weather data\nconst weather = $json.current || {};\n\n// Determine weather condition\nlet weatherCondition = \"Clear\";\n\nif ((weather.rain || 0) > 0) {\n  weatherCondition = \"Rain\";\n}\n\nif ((weather.wind_speed_10m || 0) > 30) {\n  weatherCondition = \"High Wind\";\n}\n\n// ---------- FORCE HIGH RISK ----------\nconst weatherRisk = 90;\nconst cargoRisk = 90;\nconst routeRisk = 90;\nconst totalRiskScore = 90;\n\nconst delayRisk = \"High\";\n\nconst recommendedAction =\n  \"Escalate immediately, notify operations team, notify customer, and activate contingency plan.\";\n\nreturn [\n  {\n    json: {\n\n      cargo_id: shipment.cargo_id,\n      awb_number: shipment.awb_number,\n\n      origin_airport: shipment.origin_airport,\n      destination_airport: shipment.destination_airport,\n\n      current_location: shipment.current_location,\n\n      shipment_stage: shipment.shipment_stage,\n\n      cargo_status: shipment.current_status,\n\n      shipper_name: shipment.shipper_name,\n      consignee_name: shipment.consignee_name,\n\n      cargo_type: shipment.cargo_type,\n      priority_level: shipment.priority_level,\n\n      weather_condition: weatherCondition,\n\n      temperature_2m: weather.temperature_2m,\n      precipitation: weather.precipitation,\n      rain: weather.rain,\n      wind_speed_10m: weather.wind_speed_10m,\n      visibility: weather.visibility,\n      cloud_cover: weather.cloud_cover,\n\n      weather_risk_score: weatherRisk,\n      cargo_risk_score: cargoRisk,\n      route_risk_score: routeRisk,\n      total_risk_score: totalRiskScore,\n\n      delay_risk: delayRisk,\n\n      recommended_action: recommendedAction,\n\n      risk_flags: [\n        \"High Risk Test\"\n      ],\n\n      route_status: shipment.route_status,\n\n      delay_hours: shipment.delay_hours,\n\n      event_timestamp:\n        shipment.last_event_timestamp || new Date().toISOString()\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -5472,
+        416
+      ],
+      "id": "9427694c-1bb8-4328-b0f7-d818db15b858",
+      "name": "Compute Operational Risk"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Cargo ID: {{$json.cargo_id}}\n\nCargo Status: {{$json.cargo_status}}\n\nDelay Hours: {{$json.delay_hours}}\n\nWeather Condition: {{$json.weather_condition}}\n\nTemperature: {{$json.temperature}}\n\nRain: {{$json.rain}}\n\nWind Speed: {{$json.wind_speed}}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are an aviation cargo logistics risk analyst.\n\nAnalyze the shipment information and determine:\n\n1. delay_risk_level\n2. recommended_action\n\nRules:\n\n- delay_hours > 4 = High\n- delay_hours between 2 and 4 = Medium\n- delay_hours < 2 = Low\n\nIf weather_condition is Rain or High Wind, increase risk by one level.\n\nReturn ONLY the structured output.\nDo not include explanations."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -5248,
+        416
+      ],
+      "id": "2e33fbc7-03c7-4e47-8139-37cffb29c4fd",
+      "name": "Gemini AI Decision Engine"
+    },
+    {
+      "parameters": {
+        "jsCode": "const ai = $input.first().json.output || {};\n\nconst cargo = $(\"Compute Operational Risk\").first().json;\n\nreturn [{\n  json: {\n\n    //========================\n    // Shipment\n    //========================\n    cargo_id: cargo.cargo_id,\n    awb_number: cargo.awb_number,\n\n    origin_airport: cargo.origin_airport,\n    destination_airport: cargo.destination_airport,\n\n    shipment_stage: cargo.shipment_stage,\n    cargo_status: cargo.cargo_status,\n\n    current_location: cargo.current_location,\n\n    shipper_name: cargo.shipper_name,\n    consignee_name: cargo.consignee_name,\n\n    cargo_type: cargo.cargo_type,\n    priority_level: cargo.priority_level,\n\n    //========================\n    // Weather\n    //========================\n    weather_condition: cargo.weather_condition,\n    temperature_2m: cargo.temperature_2m,\n    precipitation: cargo.precipitation,\n    rain: cargo.rain,\n    wind_speed_10m: cargo.wind_speed_10m,\n    visibility: cargo.visibility,\n    cloud_cover: cargo.cloud_cover,\n\n    //========================\n    // Risk Scores\n    //========================\n    weather_risk_score: cargo.weather_risk_score,\n    cargo_risk_score: cargo.cargo_risk_score,\n    route_risk_score: cargo.route_risk_score,\n    total_risk_score: cargo.total_risk_score,\n\n    delay_hours: cargo.delay_hours,\n    route_status: cargo.route_status,\n\n    event_timestamp: cargo.event_timestamp,\n\n    //========================\n    // AI Intelligence\n    //========================\n    delay_risk: ai.delay_risk_level,\n    recommended_action: ai.recommended_action\n\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4896,
+        416
+      ],
+      "id": "cab39e82-25f5-4299-8e46-9e9d336b0201",
+      "name": "AI Decision Parser"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.delay_risk }}",
+                    "rightValue": "High",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "bb36f31b-114b-4adf-82b1-759c224dd156"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "High"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "53317d9f-a2e6-4bb0-ae62-9af0ce3ada77",
+                    "leftValue": "={{ $json.delay_risk }}",
+                    "rightValue": "Medium",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Medium"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "2cda846c-aa0b-4d74-8ab9-69c6741f6285",
+                    "leftValue": "={{ $json.delay_risk }}",
+                    "rightValue": "Low",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Low"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -4672,
+        288
+      ],
+      "id": "4bf7efcb-d1b3-41be-9da4-0c12cc6a6c7d",
+      "name": "Risk Routing Engine"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Prepare Cargo Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Gemini AI Decision Engine",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Gemini AI Decision Engine",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Cargo Input": {
+      "main": [
+        [
+          {
+            "node": "Normalize Cargo Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Cargo Data": {
+      "main": [
+        [
+          {
+            "node": "Upsert Shipment Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send High-Risk WhatsApp Alert": {
+      "main": [
+        []
+      ]
+    },
+    "Send High-Risk Email Alert": {
+      "main": [
+        []
+      ]
+    },
+    "Send Medium-Risk Email Alert": {
+      "main": [
+        []
+      ]
+    },
+    "Upsert Shipment Record": {
+      "main": [
+        [
+          {
+            "node": "Retrieve Weather Intelligence",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Tracking Event1": {
+      "main": [
+        []
+      ]
+    },
+    "Retrieve Weather Intelligence": {
+      "main": [
+        [
+          {
+            "node": "Compute Operational Risk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compute Operational Risk": {
+      "main": [
+        [
+          {
+            "node": "Gemini AI Decision Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini AI Decision Engine": {
+      "main": [
+        [
+          {
+            "node": "AI Decision Parser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Decision Parser": {
+      "main": [
+        [
+          {
+            "node": "Risk Routing Engine",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Insert Tracking Event1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Risk Routing Engine": {
+      "main": [
+        [
+          {
+            "node": "Send High-Risk WhatsApp Alert",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update High-Risk Record",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send High-Risk Email Alert",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Medium-Risk Email Alert",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update Medium-Risk Record",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update Low-Risk Record",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "72d22631-76ce-4398-a2f7-fbf4e007ce88",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "bddecd7f6fbc376b17b9e659dbb06124875744510e9cc79341ebbbc0086d3760"
+  },
+  "nodeGroups": [],
+  "id": "jJamQI0ZGxaNDuYM",
+  "tags": []
+}
